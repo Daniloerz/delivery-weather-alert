@@ -32,3 +32,20 @@ spring:
 app:
   description: "Delivery Weather Alert System"
   version: "1.0.0"
+
+auth:
+  key: ${KEY}
+
+crypto:
+  internal_key: M3l1D3l1v3ryW34t
+
+weather_api:
+  url: https://api.weatherapi.com/v1/forecast.json
+
+email:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+  from: no-reply@mercadolibre.com
+  tls:
+    enable: true
