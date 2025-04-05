@@ -1,5 +1,6 @@
 package com.meli.delivery_weather_alert.core.service;
 
+import com.meli.delivery_weather_alert.adapter.in.dto.response.AlertResponse;
 import com.meli.delivery_weather_alert.adapter.out.weather.response.Condition;
 import com.meli.delivery_weather_alert.core.domain.model.Configuration;
 import com.meli.delivery_weather_alert.core.domain.model.WeatherForecast;
@@ -28,7 +29,7 @@ public class WeatherAlertService implements WeatherAlertServicePort {
     private static final String SUBJECT = "Mercado Libre: Entrega retrasada";
 
     @Override
-    public String sendAlert(String latitude, String longitude, String email) {
+    public AlertResponse sendAlert(String latitude, String longitude, String email) {
 
         String location = String.join(",", latitude, longitude);
 
@@ -38,10 +39,10 @@ public class WeatherAlertService implements WeatherAlertServicePort {
 
         if(sendAlert(forecastDays)){
             sendEmail(email, forecastDays.getText());
-            return "Mensaje enviado. El pedido presenta demoras por condición climatica. Revisar en correo no deseado";
+            return new AlertResponse(forecastDays.getCode(), forecastDays.getText(),true);
         }
 
-        return "Mensaje no enviado, el pedido no presenta demoras";
+        return new AlertResponse(forecastDays.getCode(), forecastDays.getText(),false);
     }
 
     private boolean sendAlert(WeatherForecast forecast){
