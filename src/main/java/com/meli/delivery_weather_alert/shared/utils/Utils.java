@@ -1,5 +1,7 @@
 package com.meli.delivery_weather_alert.shared.utils;
 
+import com.meli.delivery_weather_alert.shared.exceptions.CryptoException;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
@@ -17,7 +19,7 @@ public class Utils {
             byte[] encryptedBytes = cipher.doFinal(input.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(encryptedBytes);
         } catch (Exception e) {
-            throw new RuntimeException("Error al encriptar", e);
+            throw new CryptoException("Error al encriptar", e);
         }
     }
 
@@ -30,7 +32,7 @@ public class Utils {
             byte[] decryptedBytes = cipher.doFinal(decodedBytes);
             return new String(decryptedBytes, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            throw new RuntimeException("Error al desencriptar", e);
+            throw new CryptoException("Error al desencriptar", e);
         }
     }
 }
