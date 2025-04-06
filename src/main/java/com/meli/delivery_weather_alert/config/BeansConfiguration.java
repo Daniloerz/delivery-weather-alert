@@ -1,21 +1,21 @@
 package com.meli.delivery_weather_alert.config;
 
-import com.meli.delivery_weather_alert.adapter.out.email.EmailAdapter;
-import com.meli.delivery_weather_alert.adapter.out.email.EmailHistoryAdapter;
-import com.meli.delivery_weather_alert.adapter.out.email.EmailSenderAdapter;
-import com.meli.delivery_weather_alert.adapter.out.persistence.adapter.RepositoryAdapter;
-import com.meli.delivery_weather_alert.adapter.out.persistence.repository.IConfigurationRepository;
-import com.meli.delivery_weather_alert.adapter.out.persistence.repository.IEmailHistoryRespository;
-import com.meli.delivery_weather_alert.adapter.out.weather.WeatherAPIAdapter;
-import com.meli.delivery_weather_alert.adapter.out.weather.WeatherAPIClient;
-import com.meli.delivery_weather_alert.core.port.in.EmailHistoryServicePort;
-import com.meli.delivery_weather_alert.core.port.in.WeatherAlertServicePort;
-import com.meli.delivery_weather_alert.core.port.out.EmailHistoryPort;
-import com.meli.delivery_weather_alert.core.port.out.EmailSenderPort;
-import com.meli.delivery_weather_alert.core.port.out.RepositoryPort;
-import com.meli.delivery_weather_alert.core.port.out.WeatherProviderPort;
-import com.meli.delivery_weather_alert.core.service.EmailHistoryService;
-import com.meli.delivery_weather_alert.core.service.WeatherAlertService;
+import com.meli.delivery_weather_alert.infraestructure.out.email.adapter.EmailAdapter;
+import com.meli.delivery_weather_alert.infraestructure.out.persistence.adapter.EmailHistoryAdapter;
+import com.meli.delivery_weather_alert.infraestructure.out.email.EmailSender;
+import com.meli.delivery_weather_alert.infraestructure.out.persistence.adapter.ConfigurationRepositoryAdapter;
+import com.meli.delivery_weather_alert.infraestructure.out.persistence.repository.IConfigurationRepository;
+import com.meli.delivery_weather_alert.infraestructure.out.persistence.repository.IEmailHistoryRespository;
+import com.meli.delivery_weather_alert.infraestructure.out.weather.adapter.WeatherAPIAdapter;
+import com.meli.delivery_weather_alert.infraestructure.out.weather.WeatherAPIClient;
+import com.meli.delivery_weather_alert.domain.port.in.EmailHistoryServicePort;
+import com.meli.delivery_weather_alert.domain.port.in.WeatherAlertServicePort;
+import com.meli.delivery_weather_alert.domain.port.out.EmailHistoryPort;
+import com.meli.delivery_weather_alert.domain.port.out.EmailSenderPort;
+import com.meli.delivery_weather_alert.domain.port.out.ConfigurationRepositoryPort;
+import com.meli.delivery_weather_alert.domain.port.out.WeatherProviderPort;
+import com.meli.delivery_weather_alert.domain.service.EmailHistoryService;
+import com.meli.delivery_weather_alert.domain.service.WeatherAlertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -36,13 +36,13 @@ public class BeansConfiguration {
     }
 
     @Bean
-    public RepositoryPort repositoryPort(@Autowired IConfigurationRepository configurationRepository) {
-        return new RepositoryAdapter(configurationRepository);
+    public ConfigurationRepositoryPort repositoryPort(@Autowired IConfigurationRepository configurationRepository) {
+        return new ConfigurationRepositoryAdapter(configurationRepository);
     }
 
     @Bean
-    public EmailSenderPort emailSenderPort(@Autowired EmailSenderAdapter emailSenderAdapter){
-        return new EmailAdapter(emailSenderAdapter);
+    public EmailSenderPort emailSenderPort(@Autowired EmailSender emailSender){
+        return new EmailAdapter(emailSender);
     }
 
     @Bean
@@ -56,8 +56,8 @@ public class BeansConfiguration {
     }
 
     @Bean
-    public WeatherAlertServicePort weatherAlertServicePort(@Value("${crypto.internal_key}") String internalKey, @Autowired WeatherProviderPort weatherProviderPort, @Autowired RepositoryPort repositoryPort, @Autowired EmailSenderPort emailSenderPort, @Autowired EmailHistoryServicePort emailHistoryServicePort) {
-        return new WeatherAlertService(weatherProviderPort, repositoryPort, internalKey, emailSenderPort, emailHistoryServicePort);
+    public WeatherAlertServicePort weatherAlertServicePort(@Value("${crypto.internal_key}") String internalKey, @Autowired WeatherProviderPort weatherProviderPort, @Autowired ConfigurationRepositoryPort configurationRepositoryPort, @Autowired EmailSenderPort emailSenderPort, @Autowired EmailHistoryServicePort emailHistoryServicePort) {
+        return new WeatherAlertService(weatherProviderPort, configurationRepositoryPort, internalKey, emailSenderPort, emailHistoryServicePort);
     }
 
 }

@@ -23,7 +23,7 @@ spring:
           lob:
             non_contextual_creation: true
         format_sql: true
-    show-sql: true
+    show-sql: false
 
   sql:
     init:
@@ -51,3 +51,15 @@ email:
   from: no-reply@mercadolibre.com
   tls:
     enable: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      weatherApi:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
+        automaticTransitionFromOpenToHalfOpenEnabled: true

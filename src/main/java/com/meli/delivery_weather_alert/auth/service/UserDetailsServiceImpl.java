@@ -1,7 +1,7 @@
 package com.meli.delivery_weather_alert.auth.service;
 
-import com.meli.delivery_weather_alert.adapter.out.persistence.entity.UserEntity;
-import com.meli.delivery_weather_alert.adapter.out.persistence.repository.IUserRepository;
+import com.meli.delivery_weather_alert.infraestructure.out.persistence.entity.UserEntity;
+import com.meli.delivery_weather_alert.infraestructure.out.persistence.repository.IUserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
