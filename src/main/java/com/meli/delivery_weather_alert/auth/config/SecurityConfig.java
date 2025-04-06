@@ -2,8 +2,8 @@ package com.meli.delivery_weather_alert.auth.config;
 
 import com.meli.delivery_weather_alert.auth.filter.JwtAuthenticationFilter;
 import com.meli.delivery_weather_alert.auth.filter.JwtValidationFilter;
-import com.meli.delivery_weather_alert.adapter.out.persistence.entity.UserEntity;
-import com.meli.delivery_weather_alert.adapter.out.persistence.repository.IUserRepository;
+import com.meli.delivery_weather_alert.infraestructure.out.persistence.entity.UserEntity;
+import com.meli.delivery_weather_alert.infraestructure.out.persistence.repository.IUserRepository;
 import com.meli.delivery_weather_alert.auth.service.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,8 +1,8 @@
 package com.meli.delivery_weather_alert.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.meli.delivery_weather_alert.adapter.out.persistence.entity.UserEntity;
-import com.meli.delivery_weather_alert.core.domain.exception.AuthenticationRequestParseException;
+import com.meli.delivery_weather_alert.infraestructure.out.persistence.entity.UserEntity;
+import com.meli.delivery_weather_alert.auth.exceptions.AuthenticationRequestParseException;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
