@@ -1,7 +1,7 @@
 package com.meli.delivery_weather_alert.core.port.in;
 
-import com.meli.delivery_weather_alert.adapter.in.dto.response.AlertResponse;
+import com.meli.delivery_weather_alert.adapter.in.dto.response.AlertResponseDto;
 
 public interface WeatherAlertServicePort {
-    AlertResponse sendAlert (String latitude, String longitude, String email);
+    AlertResponseDto sendAlert (String latitude, String longitude, String email);
 }

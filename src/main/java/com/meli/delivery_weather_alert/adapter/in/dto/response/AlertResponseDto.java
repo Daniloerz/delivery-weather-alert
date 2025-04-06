@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class AlertResponse {
+public class AlertResponseDto {
     @JsonProperty("forecaste_code")
     private final Integer forecastCode;
     @JsonProperty("forecast_descripcion")
