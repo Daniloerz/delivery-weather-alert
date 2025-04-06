@@ -5,6 +5,11 @@ import com.meli.delivery_weather_alert.adapter.in.dto.response.AlertResponseDto;
 import com.meli.delivery_weather_alert.adapter.in.dto.response.EmailHistoryResponseDto;
 import com.meli.delivery_weather_alert.core.port.in.EmailHistoryServicePort;
 import com.meli.delivery_weather_alert.core.port.in.WeatherAlertServicePort;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +25,32 @@ public class WeatherAlertController {
     private final EmailHistoryServicePort emailHistoryServicePort;
 
     @PostMapping()
-    public ResponseEntity<AlertResponseDto> weatherAlert(@RequestBody AlertRequestDto alertRequestDto){
-        return ResponseEntity.ok(weatherAlertServicePort.sendAlert(alertRequestDto.getLatitude(), alertRequestDto.getLongitude(), alertRequestDto.getEmail()));
+    @Operation(
+            summary = "Enviar alerta de clima",
+            description = "Este endpoint envía una alerta de clima al correo del comprador basado en las coordenadas proporcionadas."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Alerta enviada exitosamente")
+    })
+    public ResponseEntity<AlertResponseDto> weatherAlert(@Valid @RequestBody AlertRequestDto alertRequestDto){
+        return ResponseEntity.ok(weatherAlertServicePort.sendAlert(
+                alertRequestDto.getLatitude(),
+                alertRequestDto.getLongitude(),
+                alertRequestDto.getEmail()
+        ));
     }
 
     @GetMapping("/history")
-    public ResponseEntity<List<EmailHistoryResponseDto>> getBuyerNotificationHistory(@RequestParam String email){
+    @Operation(
+            summary = "Obtener historial de notificaciones de un comprador",
+            description = "Este endpoint devuelve el historial de notificaciones enviadas a un comprador con el correo electrónico proporcionado."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Historial obtenido exitosamente")
+           })
+    public ResponseEntity<List<EmailHistoryResponseDto>> getBuyerNotificationHistory(
+            @RequestParam @Parameter(description = "Correo electrónico del comprador") String email
+    ){
         return ResponseEntity.ok(emailHistoryServicePort.getBuyerNotificationHistory(email));
     }
 }

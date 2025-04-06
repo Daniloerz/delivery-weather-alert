@@ -33,11 +33,13 @@ app:
   description: "Delivery Weather Alert System"
   version: "1.0.0"
 
-auth:
-  key: ${KEY}
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
 
 crypto:
-  internal_key: M3l1D3l1v3ryW34t
+  internal_key: ${INTERNAL_KEY}
 
 weather_api:
   url: https://api.weatherapi.com/v1/forecast.json
