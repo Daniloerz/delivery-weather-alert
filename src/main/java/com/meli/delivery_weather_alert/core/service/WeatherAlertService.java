@@ -1,9 +1,9 @@
 package com.meli.delivery_weather_alert.core.service;
 
-import com.meli.delivery_weather_alert.adapter.in.dto.response.AlertResponse;
-import com.meli.delivery_weather_alert.adapter.out.weather.response.Condition;
-import com.meli.delivery_weather_alert.core.domain.model.Configuration;
+import com.meli.delivery_weather_alert.adapter.in.dto.response.AlertResponseDto;
+import com.meli.delivery_weather_alert.core.domain.model.EmailHistory;
 import com.meli.delivery_weather_alert.core.domain.model.WeatherForecast;
+import com.meli.delivery_weather_alert.core.port.in.EmailHistoryServicePort;
 import com.meli.delivery_weather_alert.core.port.in.WeatherAlertServicePort;
 import com.meli.delivery_weather_alert.core.port.out.EmailSenderPort;
 import com.meli.delivery_weather_alert.core.port.out.RepositoryPort;
@@ -12,6 +12,7 @@ import com.meli.delivery_weather_alert.shared.utils.Utils;
 import io.jsonwebtoken.lang.Strings;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +28,10 @@ public class WeatherAlertService implements WeatherAlertServicePort {
     private final String internalKey;
     private final EmailSenderPort emailSenderPort;
     private static final String SUBJECT = "Mercado Libre: Entrega retrasada";
+    private final EmailHistoryServicePort emailHistoryServicePort;
 
     @Override
-    public AlertResponse sendAlert(String latitude, String longitude, String email) {
+    public AlertResponseDto sendAlert(String latitude, String longitude, String email) {
 
         String location = String.join(",", latitude, longitude);
 
@@ -39,10 +41,11 @@ public class WeatherAlertService implements WeatherAlertServicePort {
 
         if(sendAlert(forecastDays)){
             sendEmail(email, forecastDays.getText());
-            return new AlertResponse(forecastDays.getCode(), forecastDays.getText(),true);
+            saveBuyerNotification(forecastDays, email);
+            return new AlertResponseDto(forecastDays.getCode(), forecastDays.getText(),true);
         }
 
-        return new AlertResponse(forecastDays.getCode(), forecastDays.getText(),false);
+        return new AlertResponseDto(forecastDays.getCode(), forecastDays.getText(),false);
     }
 
     private boolean sendAlert(WeatherForecast forecast){
@@ -53,6 +56,11 @@ public class WeatherAlertService implements WeatherAlertServicePort {
 
         String body = String.format(BODY_TEMPLATE, text);
         emailSenderPort.sendEmail(email, SUBJECT,body);
+    }
+
+    private void saveBuyerNotification (WeatherForecast weatherForecast, String email){
+        EmailHistory emailHistory = new EmailHistory(email, new Date(), weatherForecast.getCountry(), weatherForecast.getLocationName(), weatherForecast.getRegion(), weatherForecast.getCode(), weatherForecast.getText());
+        emailHistoryServicePort.saveBuyerEmailNotification(emailHistory);
     }
 
 }
