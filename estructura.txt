@@ -1,0 +1,49 @@
+.
+├── build
+│   └── reports
+│       └── problems
+├── gradle
+│   └── wrapper
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── meli
+    │   │           └── delivery_weather_alert
+    │   │               ├── adapter
+    │   │               │   ├── in
+    │   │               │   │   ├── controller
+    │   │               │   │   └── dto
+    │   │               │   │       ├── request
+    │   │               │   │       └── response
+    │   │               │   └── out
+    │   │               │       ├── email
+    │   │               │       ├── persistence
+    │   │               │       │   ├── adapter
+    │   │               │       │   ├── entity
+    │   │               │       │   └── repository
+    │   │               │       └── weather
+    │   │               │           └── {dto}
+    │   │               ├── auth
+    │   │               │   ├── config
+    │   │               │   ├── filter
+    │   │               │   └── service
+    │   │               ├── config
+    │   │               └── core
+    │   │                   ├── domain
+    │   │                   │   ├── exception
+    │   │                   │   └── model
+    │   │                   ├── port
+    │   │                   │   ├── in
+    │   │                   │   └── out
+    │   │                   └── service
+    │   └── resources
+    │       ├── static
+    │       └── templates
+    └── test
+        └── java
+            └── com
+                └── meli
+                    └── delivery_weather_alert
+
+46 directories

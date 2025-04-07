@@ -1,0 +1,65 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: delivery-weather-alert
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require&sslfactory=org.postgresql.ssl.NonValidatingFactory
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 5
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        format_sql: true
+    show-sql: false
+
+  sql:
+    init:
+      mode: never
+
+app:
+  description: "Delivery Weather Alert System"
+  version: "1.0.0"
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+crypto:
+  internal_key: ${INTERNAL_KEY}
+
+weather_api:
+  url: https://api.weatherapi.com/v1/forecast.json
+
+email:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+  from: no-reply@mercadolibre.com
+  tls:
+    enable: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      weatherApi:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
+        automaticTransitionFromOpenToHalfOpenEnabled: true
